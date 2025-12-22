@@ -1,0 +1,59 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+
+      # EntryPoints
+      - "--entrypoints.web.address=:80"
+
+      # Dashboard
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+
+    ports:
+      - "80:80"                     # Public (used by Cloudflare Tunnel)
+      - "100.120.251.69:8080:8080"       # Traefik dashboard (LOCAL ONLY)
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    networks:
+      - proxy
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    command: -H unix:///var/run/docker.sock
+
+    ports:
+      - "100.120.251.69:9000:9000"       # Portainer UI (LOCAL ONLY)
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+    networks:
+      - proxy
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    depends_on:
+      - traefik
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  portainer_data:

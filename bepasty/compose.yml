@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  bepasty:
+    image: asmaps/bepasty
+    container_name: bepasty
+    restart: unless-stopped
+
+    volumes:
+      - bepasty_data:/srv/bepasty
+
+    networks:
+      - proxy
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bepasty.rule=Host(`bepasty.jaypussy.site`)"
+      - "traefik.http.routers.bepasty.entrypoints=web"
+      - "traefik.http.services.bepasty.loadbalancer.server.port=5000"
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  bepasty_data:
