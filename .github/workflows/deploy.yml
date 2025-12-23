@@ -31,6 +31,12 @@ jobs:
           docker compose pull
           docker compose up -d
 
+      - name: Deploy word-mastermind
+        run: |
+          cd word-mastermind
+          docker compose pull
+          docker compose up -d
+
       - name: Cleanup old images
         run: docker image prune -f
 
