@@ -1,0 +1,36 @@
+name: Deploy Homelab
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy infrastructure
+        run: |
+          cd infra
+          docker compose pull
+          docker compose up -d
+
+      - name: Deploy bepasty
+        run: |
+          cd bepasty
+          docker compose pull
+          docker compose up -d
+
+      - name: Deploy test-nginx
+        run: |
+          cd test-nginx
+          docker compose pull
+          docker compose up -d
+
+      - name: Cleanup old images
+        run: docker image prune -f
+
