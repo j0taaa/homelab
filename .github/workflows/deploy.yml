@@ -39,6 +39,12 @@ jobs:
           docker compose pull
           docker compose up -d
 
+      - name: Deploy divyde
+        run: |
+          cd divyde
+          docker compose pull
+          docker compose up -d
+
       - name: Cleanup old images
         run: docker image prune -f
 
