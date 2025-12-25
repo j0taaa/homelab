@@ -1,0 +1,47 @@
+services:
+  divyde:
+    image: ghcr.io/j0taaa/divyde:latest
+    container_name: divyde
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@divyde-db:5432/divyde?schema=public
+      - NODE_ENV=production
+    depends_on:
+      divyde-db:
+        condition: service_healthy
+    networks:
+      - proxy
+      - divyde-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.divyde.rule=Host(`divyde.jaypussy.site`)"
+      - "traefik.http.routers.divyde.entrypoints=web"
+      - "traefik.http.services.divyde.loadbalancer.server.port=3000"
+
+  divyde-db:
+    image: postgres:16-alpine
+    container_name: divyde-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: divyde
+    volumes:
+      - divyde-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d divyde"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - divyde-network
+
+volumes:
+  divyde-postgres-data:
+
+networks:
+  proxy:
+    external: true
+  divyde-network:
+    driver: bridge
+
