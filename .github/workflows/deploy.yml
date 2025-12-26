@@ -16,6 +16,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Prepare Docker config (no credential helper)
+        run: |
+          # Avoid using the runner's persisted ~/.docker/config.json which may reference
+          # a credential helper not available on this OS (e.g. docker-credential-desktop.exe).
+          echo "DOCKER_CONFIG=$RUNNER_TEMP/docker-config" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/docker-config"
+          if [ ! -f "$RUNNER_TEMP/docker-config/config.json" ]; then
+            echo '{}' > "$RUNNER_TEMP/docker-config/config.json"
+          fi
+
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
