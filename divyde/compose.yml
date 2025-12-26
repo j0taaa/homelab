@@ -17,6 +17,7 @@ services:
       - "traefik.http.routers.divyde.rule=Host(`divyde.jaypussy.site`)"
       - "traefik.http.routers.divyde.entrypoints=web"
       - "traefik.http.services.divyde.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
 
   divyde-db:
     image: postgres:16-alpine
