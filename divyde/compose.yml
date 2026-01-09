@@ -14,7 +14,7 @@ services:
       - divyde-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.divyde.rule=Host(`divyde.jaypussy.site`)"
+      - "traefik.http.routers.divyde.rule=Host(`divyde.${BASE_DOMAIN:-jaypussy.site}`)"
       - "traefik.http.routers.divyde.entrypoints=web"
       - "traefik.http.services.divyde.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"
@@ -45,4 +45,3 @@ networks:
     external: true
   divyde-network:
     driver: bridge
-
