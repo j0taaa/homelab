@@ -1,11 +1,11 @@
 # 🏠 Homelab
 
-Self-hosted Docker infrastructure with Traefik reverse proxy and Cloudflare Tunnel.
+Self-hosted Docker infrastructure with Traefik reverse proxy and optional Cloudflare Tunnel.
 
 ## Architecture
 
 ```
-Internet → Cloudflare Tunnel → Traefik → Services
+Internet → (Cloudflare Tunnel) → Traefik → Services
                                   ↓
                     [bepasty, test-nginx, ...]
 ```
@@ -18,7 +18,7 @@ Internet → Cloudflare Tunnel → Traefik → Services
 |---------|-------------|--------|
 | **Traefik v3** | Reverse proxy with automatic Docker discovery | Dashboard: `<tailscale-ip>:8080` |
 | **Portainer** | Docker management UI | `<tailscale-ip>:9000` |
-| **Cloudflared** | Secure tunnel to Cloudflare (no port forwarding needed) | - |
+| **Cloudflared** | Secure tunnel to Cloudflare (no port forwarding needed) | Optional |
 
 ### Applications
 
@@ -32,7 +32,7 @@ Internet → Cloudflare Tunnel → Traefik → Services
 ### Prerequisites
 
 - Docker & Docker Compose
-- Cloudflare account with a tunnel configured
+- (Optional) Cloudflare account with a tunnel configured
 - (Optional) Tailscale for secure access to management UIs
 
 ### Setup
@@ -42,11 +42,13 @@ Internet → Cloudflare Tunnel → Traefik → Services
    docker network create proxy
    ```
 
-2. **Configure Cloudflare Tunnel token:**
+2. **Configure environment variables:**
    ```bash
-   # Create .env file in infra/
-   echo "CF_TUNNEL_TOKEN=your-token-here" > infra/.env
+   cp infra/.env.example infra/.env
    ```
+
+   - To **enable** the Cloudflare Tunnel, set `COMPOSE_PROFILES=cloudflare` and provide `CF_TUNNEL_TOKEN`.
+   - To **disable** the tunnel (e.g., VPS/home lab with ports forwarded), leave `COMPOSE_PROFILES` empty. Traefik will still listen on ports 80 and your DNS can point directly to the host.
 
 3. **Start infrastructure:**
    ```bash

@@ -43,6 +43,8 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
+    profiles:
+      - cloudflare
     restart: unless-stopped
     depends_on:
       - traefik
