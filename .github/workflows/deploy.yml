@@ -11,6 +11,8 @@ jobs:
     permissions:
       contents: read
       packages: read
+    env:
+      LOCAL_BIND_IP: ${{ vars.LOCAL_BIND_IP }}
     
     steps:
       - name: Checkout code

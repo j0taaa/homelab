@@ -21,3 +21,8 @@ Thumbs.db
 # Logs
 *.log
 
+
+# GitHub Actions runner artifacts
+_actions/
+_PipelineMapping/
+homelab/

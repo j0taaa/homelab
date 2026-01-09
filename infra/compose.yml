@@ -16,7 +16,7 @@ services:
 
     ports:
       - "${TRAEFIK_HTTP_PORT:-80}:80"                     # Public (used by Cloudflare Tunnel)
-      - "${LOCAL_BIND_IP:-100.120.251.69}:${TRAEFIK_DASHBOARD_PORT:-8080}:8080"       # Traefik dashboard (LOCAL ONLY)
+      - "${LOCAL_BIND_IP:-127.0.0.1}:${TRAEFIK_DASHBOARD_PORT:-8080}:8080"       # Traefik dashboard (LOCAL ONLY)
 
     volumes:
       - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
@@ -31,7 +31,7 @@ services:
     command: -H unix:///var/run/docker.sock
 
     ports:
-      - "${LOCAL_BIND_IP:-100.120.251.69}:${PORTAINER_PORT:-9000}:9000"       # Portainer UI (LOCAL ONLY)
+      - "${LOCAL_BIND_IP:-127.0.0.1}:${PORTAINER_PORT:-9000}:9000"       # Portainer UI (LOCAL ONLY)
 
     volumes:
       - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock
