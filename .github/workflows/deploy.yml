@@ -63,6 +63,12 @@ jobs:
           docker compose pull
           docker compose up -d
 
+      - name: Deploy crafty-controller
+        run: |
+          cd crafty-controller
+          docker compose pull
+          docker compose up -d
+
       - name: Cleanup old images
         run: docker image prune -f
 

@@ -1,0 +1,37 @@
+services:
+  crafty-controller:
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    container_name: crafty-controller
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ:-Etc/UTC}
+    ports:
+      - "8443:8443" # Web UI (HTTPS)
+      - "19132:19132/udp" # Bedrock
+      - "25500-25600:25500-25600" # MC server port range
+    volumes:
+      - crafty-backups:/crafty/backups
+      - crafty-logs:/crafty/logs
+      - crafty-servers:/crafty/servers
+      - crafty-config:/crafty/app/config
+      - crafty-import:/crafty/import
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      # Dynmap (HTTP backend, works with Traefik)
+      - "traefik.http.routers.crafty-dynmap.rule=Host(`dynmap.${BASE_DOMAIN:-jaypussy.site}`)"
+      - "traefik.http.routers.crafty-dynmap.entrypoints=web"
+      - "traefik.http.services.crafty-dynmap.loadbalancer.server.port=8123"
+
+volumes:
+  crafty-backups:
+  crafty-logs:
+  crafty-servers:
+  crafty-config:
+  crafty-import:
+
+networks:
+  proxy:
+    external: true
+
