@@ -25,6 +25,9 @@ services:
       - "traefik.http.routers.crafty.service=crafty"
       - "traefik.http.services.crafty.loadbalancer.server.port=8443"
       - "traefik.http.services.crafty.loadbalancer.server.scheme=https"
+      # WebSocket support - X-Forwarded-Proto header middleware
+      - "traefik.http.middlewares.crafty-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.crafty.middlewares=crafty-headers"
       # WebSocket: increase response forwarding timeout
       - "traefik.http.services.crafty.loadbalancer.responseforwarding.flushinterval=100ms"
       # Dynmap (HTTP backend)
