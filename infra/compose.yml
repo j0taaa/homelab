@@ -11,6 +11,8 @@ services:
       # Dashboard
       - "--api.dashboard=true"
       - "--api.insecure=true"
+      # Allow self-signed certs on backends
+      - "--serversTransport.insecureSkipVerify=true"
     environment:
       - DOCKER_API_VERSION=1.44
 
