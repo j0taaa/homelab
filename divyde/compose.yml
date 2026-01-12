@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@divyde-db:5432/divyde?schema=public
+      - DATABASE_HOST=divyde-db
       - NODE_ENV=production
     depends_on:
       divyde-db:
