@@ -28,8 +28,8 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /
 RUN curl -fsSL https://opencode.ai/install | bash && \
     mv /root/.opencode/bin/opencode /usr/local/bin/opencode
 
-# Install Claude Code and Vercel CLI globally
-RUN npm install -g @anthropic-ai/claude-code vercel
+# Install Claude Code, Codex CLI and Vercel CLI globally
+RUN npm install -g @anthropic-ai/claude-code @openai/codex vercel
 
 # Git configuration - set these when building or override at runtime
 ARG GIT_USER_NAME="Your Name"
