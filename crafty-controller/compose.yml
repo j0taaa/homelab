@@ -4,7 +4,7 @@ services:
     container_name: crafty-controller
     restart: unless-stopped
     environment:
-      - TZ=${TZ:-Etc/UTC}
+      - TZ=${shared__tz:-Etc/UTC}
     ports:
       - "8443:8443" # Web UI (HTTPS)
       - "19132:19132/udp" # Bedrock
@@ -20,7 +20,7 @@ services:
     labels:
       - "traefik.enable=true"
       # Crafty Web Panel (HTTPS backend with self-signed cert)
-      - "traefik.http.routers.crafty.rule=Host(`crafty.${BASE_DOMAIN:-jaypussy.site}`)"
+      - "traefik.http.routers.crafty.rule=Host(`crafty.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.crafty.entrypoints=web"
       - "traefik.http.routers.crafty.service=crafty"
       - "traefik.http.services.crafty.loadbalancer.server.port=8443"
@@ -31,7 +31,7 @@ services:
       # WebSocket: increase response forwarding timeout
       - "traefik.http.services.crafty.loadbalancer.responseforwarding.flushinterval=100ms"
       # Dynmap (HTTP backend)
-      - "traefik.http.routers.crafty-dynmap.rule=Host(`dynmap.${BASE_DOMAIN:-jaypussy.site}`)"
+      - "traefik.http.routers.crafty-dynmap.rule=Host(`dynmap.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.crafty-dynmap.entrypoints=web"
       - "traefik.http.routers.crafty-dynmap.service=crafty-dynmap"
       - "traefik.http.services.crafty-dynmap.loadbalancer.server.port=8123"
@@ -46,4 +46,3 @@ volumes:
 networks:
   proxy:
     external: true
-

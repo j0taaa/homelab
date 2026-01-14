@@ -9,7 +9,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bepasty.rule=Host(`bepasty.${BASE_DOMAIN:-jaypussy.site}`)"
+      - "traefik.http.routers.bepasty.rule=Host(`bepasty.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.bepasty.entrypoints=web"
       - "traefik.http.services.bepasty.loadbalancer.server.port=5000"
 

@@ -1,4 +1,4 @@
-# 🏠 Homelab
+# Homelab
 
 Self-hosted Docker infrastructure with Traefik reverse proxy and optional Cloudflare Tunnel.
 
@@ -7,7 +7,7 @@ Self-hosted Docker infrastructure with Traefik reverse proxy and optional Cloudf
 ```
 Internet → (Cloudflare Tunnel) → Traefik → Services
                                   ↓
-                    [bepasty, test-nginx, ...]
+                    [bepasty, divyde, crafty, ...]
 ```
 
 ## Services
@@ -16,16 +16,19 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
 
 | Service | Description | Access |
 |---------|-------------|--------|
-| **Traefik v3** | Reverse proxy with automatic Docker discovery | Dashboard: `<tailscale-ip>:8080` |
-| **Portainer** | Docker management UI | `<tailscale-ip>:9000` |
-| **Cloudflared** | Secure tunnel to Cloudflare (no port forwarding needed) | Optional |
+| **Traefik** | Reverse proxy with automatic Docker discovery | Dashboard: `127.0.0.1:8080` |
+| **Portainer** | Docker management UI | `127.0.0.1:9000` |
+| **Cloudflared** | Secure tunnel to Cloudflare (no port forwarding needed) | Optional profile |
 
 ### Applications
 
 | Service | Description | URL |
 |---------|-------------|-----|
-| **bepasty** | File sharing / pastebin | `bepasty.jaypussy.site` |
-| **test-nginx** | Test web server | `test.jaypussy.site` |
+| **bepasty** | File sharing / pastebin | `bepasty.<domain>` |
+| **divyde** | Expense splitting app | `divyde.<domain>` |
+| **crafty-controller** | Minecraft server manager | `crafty.<domain>` |
+| **word-mastermind** | Word guessing game | `wordmastermind.<domain>` |
+| **dev-env** | Development environment | `dev.<domain>` |
 
 ## Quick Start
 
@@ -33,7 +36,6 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
 
 - Docker & Docker Compose
 - (Optional) Cloudflare account with a tunnel configured
-- (Optional) Tailscale for secure access to management UIs
 
 ### Setup
 
@@ -42,24 +44,45 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
    docker network create proxy
    ```
 
-2. **Configure environment variables:**
+2. **Configure environment:**
    ```bash
-   cp infra/.env.example infra/.env
+   cp .env.example .env
+   # Edit .env with your values
    ```
-
-   - To **enable** the Cloudflare Tunnel, set `COMPOSE_PROFILES=cloudflare` and provide `CF_TUNNEL_TOKEN`.
-   - To **disable** the tunnel (e.g., VPS/home lab with ports forwarded), leave `COMPOSE_PROFILES` empty. Traefik will still listen on ports 80 and your DNS can point directly to the host.
 
 3. **Start infrastructure:**
    ```bash
-   cd infra && docker compose up -d
+   docker compose -f infra/compose.yml up -d
+   
+   # With Cloudflare Tunnel:
+   docker compose -f infra/compose.yml --profile cloudflare up -d
    ```
 
 4. **Start applications:**
    ```bash
-   cd bepasty && docker compose up -d
-   cd test-nginx && docker compose up -d
+   docker compose -f bepasty/compose.yml up -d
+   docker compose -f divyde/compose.yml up -d
+   # etc.
    ```
+
+## Environment Variables
+
+All configuration lives in a single `.env` file at the root. Variables use double underscore to separate project from variable name:
+
+```env
+# Shared across all services
+shared__base_domain=example.com
+shared__tz=Etc/UTC
+
+# Infrastructure specific
+infra__cf_tunnel_token=xxx
+infra__traefik_version=v2.11
+
+# Dev environment specific
+dev_env__github_pat=ghp_xxx
+```
+
+See `.env.example` for all available options.
 
 ## Adding New Services
 
@@ -73,7 +96,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.my-service.rule=Host(`my-service.jaypussy.site`)"
+      - "traefik.http.routers.my-service.rule=Host(`my-service.${shared__base_domain:-example.com}`)"
       - "traefik.http.services.my-service.loadbalancer.server.port=8080"
 
 networks:
@@ -81,11 +104,10 @@ networks:
     external: true
 ```
 
-Then add the subdomain in Cloudflare DNS pointing to your tunnel.
+Then add the subdomain in your DNS pointing to your server/tunnel.
 
 ## Security
 
-- Management UIs (Traefik, Portainer) are bound to Tailscale IP only
+- Management UIs (Traefik, Portainer) are bound to localhost only by default
 - Public services are exposed via Cloudflare Tunnel (no direct internet exposure)
 - All inter-service communication happens on the isolated `proxy` network
-

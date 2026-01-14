@@ -7,7 +7,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordmastermind.rule=Host(`wordmastermind.${BASE_DOMAIN:-jaypussy.site}`)"
+      - "traefik.http.routers.wordmastermind.rule=Host(`wordmastermind.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.wordmastermind.entrypoints=web"
       - "traefik.http.services.wordmastermind.loadbalancer.server.port=80"
 

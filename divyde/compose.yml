@@ -5,8 +5,9 @@ services:
     restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@divyde-db:5432/divyde?schema=public
-      - DATABASE_HOST=divyde-db
       - NODE_ENV=production
+      # optional: disable auto schema sync
+      # - SKIP_DB_PUSH=1
     depends_on:
       divyde-db:
         condition: service_healthy
@@ -15,7 +16,7 @@ services:
       - divyde-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.divyde.rule=Host(`divyde.${BASE_DOMAIN:-jaypussy.site}`)"
+      - "traefik.http.routers.divyde.rule=Host(`divyde.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.divyde.entrypoints=web"
       - "traefik.http.services.divyde.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"

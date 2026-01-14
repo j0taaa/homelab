@@ -1,0 +1,36 @@
+services:
+  dev:
+    build:
+      context: .
+      args:
+        GIT_USER_NAME: ${dev_env__git_user_name}
+        GIT_USER_EMAIL: ${dev_env__git_user_email}
+    image: node-dev-env
+    container_name: node-dev
+    stdin_open: true
+    tty: true
+    environment:
+      - GITHUB_USER=${dev_env__github_user}
+      - GITHUB_PAT=${dev_env__github_pat}
+      - ANTHROPIC_API_KEY=${dev_env__anthropic_api_key}
+      - VERCEL_TOKEN=${dev_env__vercel_token}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./workspace:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
+    group_add:
+      - "0"  # Add root group for Docker socket access
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dev.rule=Host(`dev.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.dev.entrypoints=web"
+      - "traefik.http.services.dev.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
