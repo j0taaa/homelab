@@ -197,3 +197,70 @@ services:
       args:
         MY_ARG: ${service__my_arg}
 ```
+
+## GitHub Actions Deployment
+
+The workflow at `.github/workflows/deploy.yml` handles automated deployments.
+
+### How It Works
+
+1. Generates `.env` file from GitHub secrets/variables
+2. Deploys infrastructure first, then each service
+3. Cleans up old Docker images
+
+### When Adding a New Service
+
+You MUST update the workflow:
+
+1. **Add a deploy step** for the new service:
+
+```yaml
+- name: Deploy <service-name>
+  run: |
+    cd <service-name>
+    docker compose pull
+    docker compose up -d
+```
+
+2. **Add after** the infrastructure step but before cleanup
+
+### When Adding New Environment Variables
+
+You MUST update the workflow's "Generate .env file" step:
+
+1. **For secrets** (tokens, API keys, passwords):
+   - Add to GitHub repository secrets with UPPERCASE and double underscores
+   - Example: `INFRA__CF_TUNNEL_TOKEN`, `DEV_ENV__GITHUB_PAT`
+   - Reference in workflow: `${{ secrets.INFRA__CF_TUNNEL_TOKEN }}`
+
+2. **For non-sensitive config** (ports, versions, domains):
+   - Add to GitHub repository variables
+   - Example: `INFRA__TRAEFIK_VERSION`, `SHARED__BASE_DOMAIN`
+   - Reference in workflow: `${{ vars.INFRA__TRAEFIK_VERSION || 'default' }}`
+
+3. **Add the variable** to the heredoc in the "Generate .env file" step:
+
+```yaml
+- name: Generate .env file
+  run: |
+    cat > .env << 'ENVFILE'
+    # ... existing vars ...
+    new_scope__new_variable=${{ secrets.NEW_SCOPE__NEW_VARIABLE }}
+    ENVFILE
+```
+
+### GitHub Secrets/Variables Naming
+
+| Local `.env` | GitHub Secret/Variable |
+|--------------|------------------------|
+| `infra__cf_tunnel_token` | `INFRA__CF_TUNNEL_TOKEN` (secret) |
+| `shared__base_domain` | `SHARED__BASE_DOMAIN` or `BASE_DOMAIN` (variable) |
+| `dev_env__github_pat` | `DEV_ENV__GITHUB_PAT` (secret) |
+
+### Checklist for New Services
+
+- [ ] Create `<service>/compose.yml` with Traefik labels
+- [ ] Add variables to `.env.example` if needed
+- [ ] Add deploy step to `.github/workflows/deploy.yml`
+- [ ] Add any new secrets/variables to GitHub repository settings
+- [ ] Update "Generate .env file" step if new variables added
