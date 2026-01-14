@@ -3,17 +3,17 @@ services:
     build:
       context: .
       args:
-        GIT_USER_NAME: ${dev_env__git_user_name}
-        GIT_USER_EMAIL: ${dev_env__git_user_email}
+        GIT_USER_NAME: ${dev_env__git_user_name:-Developer}
+        GIT_USER_EMAIL: ${dev_env__git_user_email:-dev@localhost}
     image: node-dev-env
     container_name: node-dev
     stdin_open: true
     tty: true
     environment:
-      - GITHUB_USER=${dev_env__github_user}
-      - GITHUB_PAT=${dev_env__github_pat}
-      - ANTHROPIC_API_KEY=${dev_env__anthropic_api_key}
-      - VERCEL_TOKEN=${dev_env__vercel_token}
+      - GITHUB_USER=${dev_env__github_user:-}
+      - GITHUB_PAT=${dev_env__github_pat:-}
+      - ANTHROPIC_API_KEY=${dev_env__anthropic_api_key:-}
+      - VERCEL_TOKEN=${dev_env__vercel_token:-}
     ports:
       - "3000:3000"
     volumes:
