@@ -59,44 +59,44 @@ jobs:
       - name: Deploy infrastructure
         run: |
           cd infra
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
 
       - name: Deploy dev-env
         run: |
           cd dev-env
-          docker compose build
-          docker compose up -d
+          docker compose --env-file ../.env build
+          docker compose --env-file ../.env up -d
 
       - name: Deploy bepasty
         run: |
           cd bepasty
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
 
       - name: Deploy test-nginx
         run: |
           cd test-nginx
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
 
       - name: Deploy word-mastermind
         run: |
           cd word-mastermind
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
 
       - name: Deploy divyde
         run: |
           cd divyde
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
 
       - name: Deploy crafty-controller
         run: |
           cd crafty-controller
-          docker compose pull
-          docker compose up -d
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
 
       - name: Cleanup old images
         run: docker image prune -f
