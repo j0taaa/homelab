@@ -20,8 +20,6 @@ services:
       - ./workspace:/app
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
-    group_add:
-      - "0"  # Add root group for Docker socket access
     networks:
       - proxy
     labels:

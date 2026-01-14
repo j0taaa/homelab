@@ -37,15 +37,7 @@ ARG GIT_USER_EMAIL="your.email@example.com"
 
 WORKDIR /app
 
-# Create a non-root user for security
-RUN groupadd -r nodejs && useradd -r -g nodejs -m nodejs
-
-# Set ownership of the app directory
-RUN chown -R nodejs:nodejs /app
-
-USER nodejs
-
-# Configure Git for nodejs user
+# Configure Git
 RUN git config --global user.name "${GIT_USER_NAME}" && \
     git config --global user.email "${GIT_USER_EMAIL}" && \
     git config --global init.defaultBranch main && \
