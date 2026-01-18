@@ -14,14 +14,36 @@ services:
       - GITHUB_PAT=${dev_env__github_pat:-}
       - ANTHROPIC_API_KEY=${dev_env__anthropic_api_key:-}
       - VERCEL_TOKEN=${dev_env__vercel_token:-}
-    ports:
-      - "3000:3000"
+      - DOCKER_HOST=tcp://dind:2375
     volumes:
       - ./workspace:/app
-      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
     networks:
+      - dev-internal
+    depends_on:
+      - dind
+
+  dind:
+    image: docker:27-dind
+    container_name: dev-dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=
+    volumes:
+      - dind-data:/var/lib/docker
+    networks:
+      - dev-internal
+
+  dev-proxy:
+    image: nginx:alpine
+    container_name: dev-proxy
+    depends_on:
+      - dind
+    volumes:
+      - ./proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
       - proxy
+      - dev-internal
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dev.rule=Host(`dev.${shared__base_domain:-jaypussy.site}`)"
@@ -32,3 +54,8 @@ services:
 networks:
   proxy:
     external: true
+  dev-internal:
+    driver: bridge
+
+volumes:
+  dind-data:
