@@ -181,9 +181,10 @@ symbol = " "
 style = "bold blue"
 EOF
 
-# Startup script: configure credentials and start zsh
+# Startup script: configure credentials, start opencode, and start zsh
 CMD if [ -n "$GITHUB_PAT" ]; then \
       echo "https://${GITHUB_USER}:${GITHUB_PAT}@github.com" > ~/.git-credentials; \
       echo "$GITHUB_PAT" | gh auth login --with-token 2>/dev/null || true; \
     fi && \
+    opencode web --port 4096 --hostname 0.0.0.0 > /tmp/opencode.log 2>&1 & \
     exec zsh
