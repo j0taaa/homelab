@@ -49,6 +49,12 @@ services:
       - "traefik.http.routers.dev.rule=Host(`dev.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.dev.entrypoints=web"
       - "traefik.http.services.dev.loadbalancer.server.port=3000"
+      - "traefik.http.routers.dev2.rule=Host(`dev2.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.dev2.entrypoints=web"
+      - "traefik.http.services.dev2.loadbalancer.server.port=3001"
+      - "traefik.http.routers.opencode.rule=Host(`opencode.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.opencode.entrypoints=web"
+      - "traefik.http.services.opencode.loadbalancer.server.port=4096"
       - "traefik.docker.network=proxy"
 
 networks:
