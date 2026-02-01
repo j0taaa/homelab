@@ -33,7 +33,7 @@ services:
     command: -H unix:///var/run/docker.sock
 
     ports:
-      - "${infra__local_bind_ip:-127.0.0.1}:${infra__portainer_port:-9000}:9000"       # Portainer UI (LOCAL ONLY)
+      - "${infra__local_bind_ip:-0.0.0.0}:${infra__portainer_port:-9000}:9000"       # Portainer UI (accessible via tailscale)
 
     volumes:
       - ${infra__docker_socket:-/var/run/docker.sock}:/var/run/docker.sock
