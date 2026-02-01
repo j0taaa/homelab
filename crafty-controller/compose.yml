@@ -20,16 +20,17 @@ services:
     labels:
       - "traefik.enable=true"
       # Crafty Web Panel (HTTPS backend with self-signed cert)
-      - "traefik.http.routers.crafty.rule=Host(`crafty.${shared__base_domain:-jaypussy.site}`)"
-      - "traefik.http.routers.crafty.entrypoints=web"
-      - "traefik.http.routers.crafty.service=crafty"
-      - "traefik.http.services.crafty.loadbalancer.server.port=8443"
-      - "traefik.http.services.crafty.loadbalancer.server.scheme=https"
-      # WebSocket support - X-Forwarded-Proto header middleware
+      - "traefik.http.routers.crafty-panel.rule=Host(`crafty.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.crafty-panel.entrypoints=web"
+      - "traefik.http.routers.crafty-panel.service=crafty-panel"
+      - "traefik.http.services.crafty-panel.loadbalancer.server.port=8443"
+      - "traefik.http.services.crafty-panel.loadbalancer.server.scheme=https"
+      # WebSocket support - headers middleware (required per Crafty docs)
       - "traefik.http.middlewares.crafty-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.routers.crafty.middlewares=crafty-headers"
-      # WebSocket: increase response forwarding timeout
-      - "traefik.http.services.crafty.loadbalancer.responseforwarding.flushinterval=100ms"
+      - "traefik.http.routers.crafty-panel.middlewares=crafty-headers"
+      # WebSocket: passthrough and timeout settings
+      - "traefik.http.services.crafty-panel.loadbalancer.responseforwarding.flushinterval=100ms"
+      - "traefik.http.services.crafty-panel.loadbalancer.passhostheader=true"
       # Dynmap (HTTP backend)
       - "traefik.http.routers.crafty-dynmap.rule=Host(`dynmap.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.crafty-dynmap.entrypoints=web"
