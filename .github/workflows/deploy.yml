@@ -56,6 +56,23 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Stop running containers
+        run: |
+          cd infra
+          docker compose --env-file ../.env down
+          cd ../dev-env
+          docker compose --env-file ../.env down
+          cd ../bepasty
+          docker compose --env-file ../.env down
+          cd ../test-nginx
+          docker compose --env-file ../.env down
+          cd ../word-mastermind
+          docker compose --env-file ../.env down
+          cd ../divyde
+          docker compose --env-file ../.env down
+          cd ../crafty-controller
+          docker compose --env-file ../.env down
+
       - name: Deploy infrastructure
         run: |
           cd infra
