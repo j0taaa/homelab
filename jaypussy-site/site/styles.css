@@ -1,8 +1,8 @@
 :root {
   color-scheme: light;
   font-family: "Inter", system-ui, sans-serif;
-  background: #f6f7fb;
-  color: #1c2230;
+  background: #fcfdff;
+  color: #1a2233;
 }
 
 * {
@@ -11,9 +11,9 @@
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top left, #dbe8ff, transparent 55%),
-    radial-gradient(circle at top right, #f8d3e9, transparent 45%),
-    linear-gradient(160deg, #f6f7fb 20%, #eef1f8 100%);
+  background: radial-gradient(circle at top left, #eef4ff, transparent 60%),
+    radial-gradient(circle at top right, #fde8f3, transparent 50%),
+    linear-gradient(160deg, #fcfdff 20%, #f3f6fb 100%);
   min-height: 100vh;
 }
 
@@ -34,8 +34,8 @@ body {
 
 .badge {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(31, 41, 55, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(31, 41, 55, 0.1);
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 12px;
@@ -51,7 +51,7 @@ body {
 .hero p {
   max-width: 600px;
   line-height: 1.6;
-  color: rgba(28, 34, 48, 0.75);
+  color: rgba(26, 34, 51, 0.7);
   margin: 0;
 }
 
@@ -88,8 +88,8 @@ a {
 }
 
 .ghost {
-  border: 1px solid rgba(28, 34, 48, 0.2);
-  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(26, 34, 51, 0.16);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .ghost:hover {
@@ -110,7 +110,7 @@ a {
 
 .section-title p {
   margin: 8px 0 0;
-  color: rgba(28, 34, 48, 0.65);
+  color: rgba(26, 34, 51, 0.6);
 }
 
 .grid {
@@ -122,8 +122,8 @@ a {
 .card {
   padding: 22px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(31, 41, 55, 0.08);
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(31, 41, 55, 0.06);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -144,7 +144,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(90, 103, 242, 0.12);
+  background: rgba(90, 103, 242, 0.1);
   font-size: 18px;
 }
 
@@ -155,7 +155,7 @@ a {
 
 .card p {
   margin: 0;
-  color: rgba(28, 34, 48, 0.65);
+  color: rgba(26, 34, 51, 0.6);
   line-height: 1.5;
 }
 
