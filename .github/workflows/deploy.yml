@@ -60,6 +60,7 @@ jobs:
         run: |
           cd infra
           docker compose --env-file ../.env down
+          docker rm -f portainer traefik cloudflared 2>/dev/null || true
           cd ../dev-env
           docker compose --env-file ../.env down
           cd ../bepasty
