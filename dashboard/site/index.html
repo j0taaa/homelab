@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jaypussy Control Room</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="pulse"></span>
+          <div>
+            <h1>Jaypussy Ops</h1>
+            <p>Private control room</p>
+          </div>
+        </div>
+        <nav>
+          <a class="active" href="#overview">Overview</a>
+          <a href="#services">Services</a>
+          <a href="#automations">Automations</a>
+          <a href="#notes">Notes</a>
+        </nav>
+        <div class="status-card">
+          <h3>System Status</h3>
+          <p>All stacks healthy.</p>
+          <div class="chips">
+            <span>Traefik: OK</span>
+            <span>Portainer: OK</span>
+            <span>Cloudflared: OK</span>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <h2 id="overview">Homelab Overview</h2>
+            <p>Personalized dashboard for quick control and insights.</p>
+          </div>
+          <div class="top-actions">
+            <button>Sync Status</button>
+            <button class="primary">Deploy Update</button>
+          </div>
+        </header>
+
+        <section class="grid overview">
+          <div class="panel">
+            <h3>Active Services</h3>
+            <p class="metric">12</p>
+            <p class="muted">Across game servers, apps, and utilities.</p>
+          </div>
+          <div class="panel">
+            <h3>Deploy Queue</h3>
+            <p class="metric">2</p>
+            <p class="muted">Pending updates ready to ship.</p>
+          </div>
+          <div class="panel">
+            <h3>Alerts</h3>
+            <p class="metric">0</p>
+            <p class="muted">Everything is quiet for now.</p>
+          </div>
+        </section>
+
+        <section id="services" class="section">
+          <div class="section-header">
+            <h3>Service Shortcuts</h3>
+            <p>Jump straight into frequently used panels.</p>
+          </div>
+          <div class="grid cards">
+            <a href="https://portainer.jaypussy.site" class="panel link">
+              <h4>Portainer</h4>
+              <p>Container management.</p>
+            </a>
+            <a href="https://traefik.jaypussy.site" class="panel link">
+              <h4>Traefik</h4>
+              <p>Routing + metrics.</p>
+            </a>
+            <a href="https://crafty.jaypussy.site" class="panel link">
+              <h4>Crafty Controller</h4>
+              <p>Minecraft servers.</p>
+            </a>
+            <a href="https://divyde.jaypussy.site" class="panel link">
+              <h4>Divyde</h4>
+              <p>Creative collab space.</p>
+            </a>
+          </div>
+        </section>
+
+        <section id="automations" class="section">
+          <div class="section-header">
+            <h3>Automations</h3>
+            <p>Design and trigger your own workflows.</p>
+          </div>
+          <div class="panel wide">
+            <ul>
+              <li>Restart proxy stack</li>
+              <li>Pull latest images</li>
+              <li>Backup world saves</li>
+              <li>Rotate logs</li>
+            </ul>
+            <button class="ghost">Customize automations</button>
+          </div>
+        </section>
+
+        <section id="notes" class="section">
+          <div class="section-header">
+            <h3>Owner Notes</h3>
+            <p>Personal reminders and quick info.</p>
+          </div>
+          <div class="panel wide">
+            <textarea placeholder="Leave yourself a note..."></textarea>
+            <button class="primary">Save note</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

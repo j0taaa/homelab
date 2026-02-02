@@ -71,6 +71,10 @@ jobs:
           docker compose --env-file ../.env down
           cd ../divyde
           docker compose --env-file ../.env down
+          cd ../jaypussy-site
+          docker compose --env-file ../.env down
+          cd ../dashboard
+          docker compose --env-file ../.env down
           cd ../crafty-controller
           docker compose --env-file ../.env down
 
@@ -107,6 +111,18 @@ jobs:
       - name: Deploy divyde
         run: |
           cd divyde
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
+
+      - name: Deploy jaypussy-site
+        run: |
+          cd jaypussy-site
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
+
+      - name: Deploy dashboard
+        run: |
+          cd dashboard
           docker compose --env-file ../.env pull
           docker compose --env-file ../.env up -d
 
