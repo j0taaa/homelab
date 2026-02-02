@@ -51,6 +51,9 @@ jobs:
           dev_env__github_pat=${{ secrets.DEV_ENV__GITHUB_PAT }}
           dev_env__anthropic_api_key=${{ secrets.DEV_ENV__ANTHROPIC_API_KEY }}
           dev_env__vercel_token=${{ secrets.DEV_ENV__VERCEL_TOKEN }}
+
+          # Dashboard
+          dashboard__basic_auth=${{ secrets.DASHBOARD__BASIC_AUTH }}
           ENVFILE
 
       - name: Login to GitHub Container Registry
