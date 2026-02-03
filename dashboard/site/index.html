@@ -46,6 +46,14 @@
             <p>Personalized dashboard for quick control and insights.</p>
           </div>
           <div class="top-actions">
+            <label class="theme-toggle" for="theme-select">
+              <span>Theme</span>
+              <select id="theme-select" data-theme-select>
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
             <button>Sync Status</button>
             <button class="primary">Deploy Update</button>
           </div>
@@ -122,5 +130,26 @@
         </section>
       </main>
     </div>
+    <script>
+      const themeSelect = document.querySelector("[data-theme-select]");
+      const storedTheme = localStorage.getItem("theme-preference") || "system";
+
+      const applyTheme = (value) => {
+        if (value === "system") {
+          document.documentElement.removeAttribute("data-theme");
+        } else {
+          document.documentElement.setAttribute("data-theme", value);
+        }
+      };
+
+      themeSelect.value = storedTheme;
+      applyTheme(storedTheme);
+
+      themeSelect.addEventListener("change", (event) => {
+        const value = event.target.value;
+        localStorage.setItem("theme-preference", value);
+        applyTheme(value);
+      });
+    </script>
   </body>
 </html>
