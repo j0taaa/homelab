@@ -20,6 +20,8 @@ services:
       - "traefik.http.routers.divyde.entrypoints=web"
       - "traefik.http.services.divyde.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.scope=divyde"
 
   divyde-db:
     image: postgres:16-alpine
@@ -36,6 +38,19 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - divyde-network
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: divyde-watchtower
+    restart: unless-stopped
+    command: --interval 300 --cleanup --label-enable --scope divyde
+    environment:
+      - WATCHTOWER_SCOPE=divyde
+      - DOCKER_API_VERSION=1.44
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - divyde-network
 
