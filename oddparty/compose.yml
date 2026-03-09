@@ -1,7 +1,6 @@
 services:
   oddparty:
-    build:
-      context: https://github.com/j0taaa/oddparty.git
+    image: ghcr.io/j0taaa/oddparty:latest
     container_name: oddparty
     restart: unless-stopped
     environment:
