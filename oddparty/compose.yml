@@ -1,5 +1,7 @@
 services:
   oddparty:
+    build:
+      context: .
     image: ghcr.io/j0taaa/oddparty:latest
     container_name: oddparty
     restart: unless-stopped
