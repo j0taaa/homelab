@@ -80,6 +80,8 @@ jobs:
           docker compose --env-file ../.env down
           cd ../crafty-controller
           docker compose --env-file ../.env down
+          cd ../oddparty
+          docker compose --env-file ../.env down
 
       - name: Deploy infrastructure
         run: |
@@ -133,6 +135,12 @@ jobs:
         run: |
           cd crafty-controller
           docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
+
+      - name: Deploy oddparty
+        run: |
+          cd oddparty
+          docker compose --env-file ../.env build
           docker compose --env-file ../.env up -d
 
       - name: Cleanup old images

@@ -1,0 +1,43 @@
+services:
+  oddparty:
+    build:
+      context: https://github.com/j0taaa/oddparty.git
+    container_name: oddparty
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - oddparty_data:/app/data
+    networks:
+      - proxy
+      - oddparty-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.oddparty.rule=Host(`oddparty.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.oddparty.entrypoints=web"
+      - "traefik.http.services.oddparty.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.scope=oddparty"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: oddparty-watchtower
+    restart: unless-stopped
+    command: --interval 300 --cleanup --label-enable --scope oddparty
+    environment:
+      - WATCHTOWER_SCOPE=oddparty
+      - DOCKER_API_VERSION=1.44
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - oddparty-internal
+
+volumes:
+  oddparty_data:
+
+networks:
+  proxy:
+    external: true
+  oddparty-internal:
+    driver: bridge

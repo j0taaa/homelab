@@ -29,6 +29,7 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
 | **crafty-controller** | Minecraft server manager | `crafty.<domain>` |
 | **word-mastermind** | Word guessing game | `wordmastermind.<domain>` |
 | **dev-env** | Development environment | `dev.<domain>` |
+| **oddparty** | Event marketplace app | `oddparty.<domain>` |
 
 ## Quick Start
 
