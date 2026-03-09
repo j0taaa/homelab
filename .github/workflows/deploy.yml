@@ -140,7 +140,7 @@ jobs:
       - name: Deploy oddparty
         run: |
           cd oddparty
-          docker compose --env-file ../.env build
+          docker compose --env-file ../.env pull
           docker compose --env-file ../.env up -d
 
       - name: Cleanup old images
