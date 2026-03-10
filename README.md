@@ -30,6 +30,7 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
 | **word-mastermind** | Word guessing game | `wordmastermind.<domain>` |
 | **dev-env** | Development environment | `dev.<domain>` |
 | **oddparty** | Event marketplace app | `oddparty.<domain>` |
+| **make-prediction** | Timestamped prediction proof app | `makeprediction.<domain>` |
 
 ## Quick Start
 
@@ -63,6 +64,7 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
    ```bash
    docker compose -f bepasty/compose.yml up -d
    docker compose -f divyde/compose.yml up -d
+   docker compose -f make-prediction/compose.yml up -d
    # etc.
    ```
 
