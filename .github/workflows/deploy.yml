@@ -148,7 +148,7 @@ jobs:
       - name: Deploy make-prediction
         run: |
           cd make-prediction
-          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env build --pull
           docker compose --env-file ../.env up -d
 
       - name: Cleanup old images
