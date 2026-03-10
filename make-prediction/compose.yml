@@ -1,7 +1,5 @@
 services:
   make-prediction:
-    build:
-      context: .
     image: ghcr.io/j0taaa/make-prediction:latest
     container_name: make-prediction
     restart: unless-stopped
