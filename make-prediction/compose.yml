@@ -1,0 +1,16 @@
+services:
+  make-prediction:
+    image: ghcr.io/j0taaa/make-prediction:latest
+    container_name: make-prediction
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.makeprediction.rule=Host(`makeprediction.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.makeprediction.entrypoints=web"
+      - "traefik.http.services.makeprediction.loadbalancer.server.port=3000"
+
+networks:
+  proxy:
+    external: true
