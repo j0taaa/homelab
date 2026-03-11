@@ -31,6 +31,7 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
 | **dev-env** | Development environment | `dev.<domain>` |
 | **oddparty** | Event marketplace app | `oddparty.<domain>` |
 | **make-prediction** | Timestamped prediction proof app | `makeprediction.<domain>` |
+| **canvas-wrapper** | Canvas dashboard wrapper | `canvas.<domain>` |
 
 ## Quick Start
 
@@ -55,7 +56,7 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
 3. **Start infrastructure:**
    ```bash
    docker compose -f infra/compose.yml up -d
-   
+
    # With Cloudflare Tunnel:
    docker compose -f infra/compose.yml --profile cloudflare up -d
    ```
@@ -65,6 +66,7 @@ Internet → (Cloudflare Tunnel) → Traefik → Services
    docker compose -f bepasty/compose.yml up -d
    docker compose -f divyde/compose.yml up -d
    docker compose -f make-prediction/compose.yml up -d
+   docker compose -f canvas-wrapper/compose.yml up -d
    # etc.
    ```
 

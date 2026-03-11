@@ -54,6 +54,11 @@ jobs:
 
           # Dashboard
           dashboard__basic_auth=${{ secrets.DASHBOARD__BASIC_AUTH }}
+
+          # Canvas Wrapper
+          canvas_wrapper__canvas_key=${{ secrets.CANVAS_WRAPPER__CANVAS_KEY }}
+          canvas_wrapper__canvas_api_base=${{ vars.CANVAS_WRAPPER__CANVAS_API_BASE || 'https://pucminas.instructure.com/api/v1' }}
+
           ENVFILE
 
       - name: Login to GitHub Container Registry
@@ -83,6 +88,8 @@ jobs:
           cd ../oddparty
           docker compose --env-file ../.env down
           cd ../make-prediction
+          docker compose --env-file ../.env down
+          cd ../canvas-wrapper
           docker compose --env-file ../.env down
 
       - name: Deploy infrastructure
@@ -148,6 +155,12 @@ jobs:
       - name: Deploy make-prediction
         run: |
           cd make-prediction
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
+
+      - name: Deploy canvas-wrapper
+        run: |
+          cd canvas-wrapper
           docker compose --env-file ../.env pull
           docker compose --env-file ../.env up -d
 
