@@ -58,7 +58,6 @@ jobs:
           # Canvas Wrapper
           canvas_wrapper__canvas_key=${{ secrets.CANVAS_WRAPPER__CANVAS_KEY }}
           canvas_wrapper__canvas_api_base=${{ vars.CANVAS_WRAPPER__CANVAS_API_BASE || 'https://pucminas.instructure.com/api/v1' }}
-          canvas_wrapper__ref=${{ vars.CANVAS_WRAPPER__REF || 'main' }}
 
           ENVFILE
 
@@ -162,7 +161,7 @@ jobs:
       - name: Deploy canvas-wrapper
         run: |
           cd canvas-wrapper
-          docker compose --env-file ../.env build
+          docker compose --env-file ../.env pull
           docker compose --env-file ../.env up -d
 
       - name: Cleanup old images
