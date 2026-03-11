@@ -1,5 +1,9 @@
 services:
   canvas-wrapper:
+    build:
+      context: .
+      args:
+        CANVAS_WRAPPER_REF: ${canvas_wrapper__ref:-main}
     image: ghcr.io/j0taaa/canvas-wrapper:latest
     container_name: canvas-wrapper
     restart: unless-stopped
