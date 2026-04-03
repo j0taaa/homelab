@@ -1,0 +1,65 @@
+services:
+  duchinese-clone:
+    image: ghcr.io/j0taaa/duchinese-clone:latest
+    container_name: duchinese-clone
+    restart: unless-stopped
+    depends_on:
+      duchinese-clone-db:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@duchinese-clone-db:5432/hanzilane?schema=public
+      - BETTER_AUTH_SECRET=${duchinese_clone__better_auth_secret:-change-me-in-.env}
+      - BETTER_AUTH_URL=https://chinese.${shared__base_domain:-jaypussy.site}
+      - NEXT_PUBLIC_APP_URL=https://chinese.${shared__base_domain:-jaypussy.site}
+    networks:
+      - proxy
+      - duchinese-clone-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.duchinese-clone.rule=Host(`chinese.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.duchinese-clone.entrypoints=web"
+      - "traefik.http.services.duchinese-clone.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.scope=duchinese-clone"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: duchinese-clone-watchtower
+    restart: unless-stopped
+    command: --interval 300 --cleanup --label-enable --scope duchinese-clone
+    environment:
+      - WATCHTOWER_SCOPE=duchinese-clone
+      - DOCKER_API_VERSION=1.44
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - duchinese-clone-internal
+
+  duchinese-clone-db:
+    image: postgres:16-alpine
+    container_name: duchinese-clone-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hanzilane
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - duchinese-clone-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d hanzilane"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - duchinese-clone-internal
+
+volumes:
+  duchinese-clone-postgres-data:
+
+networks:
+  proxy:
+    external: true
+  duchinese-clone-internal:
+    driver: bridge
