@@ -12,7 +12,7 @@ services:
       - canvas-wrapper-internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.canvas-wrapper.rule=Host(`canvas.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.canvas-wrapper.rule=Host(`janvas.${shared__base_domain:-jaypussy.site}`)"
       - "traefik.http.routers.canvas-wrapper.entrypoints=web"
       - "traefik.http.services.canvas-wrapper.loadbalancer.server.port=3000"
       - "traefik.docker.network=proxy"
