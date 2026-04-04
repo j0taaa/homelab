@@ -1,5 +1,6 @@
 # Agent Instructions
 
+Every change made in to this project needs to be uploaded to Github at the end (check if gh cli is installed in the computer to do that)
 This document describes project conventions for AI agents working on this homelab codebase.
 
 ## Project Structure
