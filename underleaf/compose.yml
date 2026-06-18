@@ -10,6 +10,9 @@ services:
       - UNDERLEAF_STATIC_DIR=/app/apps/web/dist
       - LATEX_ENGINE=latexmk
       - WEB_ORIGIN=https://underleaf.${shared__base_domain:-jaypussy.site}
+      - BETTER_AUTH_URL=https://underleaf.${shared__base_domain:-jaypussy.site}
+      - BETTER_AUTH_TRUSTED_ORIGINS=https://underleaf.${shared__base_domain:-jaypussy.site}
+      - BETTER_AUTH_SECRET=${underleaf__better_auth_secret:-78l8D4Zdfu8wI8+0iCr/Ped5XqBhlIsRzWMF2Mn73XLqd9QQ5s/iyS8LT8t8zid/}
     volumes:
       - underleaf_data:/data
     networks:
