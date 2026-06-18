@@ -91,6 +91,8 @@ jobs:
           docker compose --env-file ../.env down
           cd ../canvas-wrapper
           docker compose --env-file ../.env down
+          cd ../underleaf
+          docker compose --env-file ../.env down
 
       - name: Deploy infrastructure
         run: |
@@ -161,6 +163,12 @@ jobs:
       - name: Deploy canvas-wrapper
         run: |
           cd canvas-wrapper
+          docker compose --env-file ../.env pull
+          docker compose --env-file ../.env up -d
+
+      - name: Deploy underleaf
+        run: |
+          cd underleaf
           docker compose --env-file ../.env pull
           docker compose --env-file ../.env up -d
 

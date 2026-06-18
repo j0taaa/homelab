@@ -1,0 +1,47 @@
+services:
+  underleaf:
+    image: ghcr.io/j0taaa/underleaf:latest
+    container_name: underleaf
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SERVER_PORT=3001
+      - UNDERLEAF_DATA_DIR=/data
+      - UNDERLEAF_STATIC_DIR=/app/apps/web/dist
+      - LATEX_ENGINE=latexmk
+      - WEB_ORIGIN=https://underleaf.${shared__base_domain:-jaypussy.site}
+    volumes:
+      - underleaf_data:/data
+    networks:
+      - proxy
+      - underleaf-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.underleaf.rule=Host(`underleaf.${shared__base_domain:-jaypussy.site}`)"
+      - "traefik.http.routers.underleaf.entrypoints=web"
+      - "traefik.http.services.underleaf.loadbalancer.server.port=3001"
+      - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.scope=underleaf"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: underleaf-watchtower
+    restart: unless-stopped
+    command: --interval 300 --cleanup --label-enable --scope underleaf
+    environment:
+      - WATCHTOWER_SCOPE=underleaf
+      - DOCKER_API_VERSION=1.44
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - underleaf-internal
+
+volumes:
+  underleaf_data:
+
+networks:
+  proxy:
+    external: true
+  underleaf-internal:
+    driver: bridge
